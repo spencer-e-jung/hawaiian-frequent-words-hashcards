@@ -23,7 +23,7 @@ def mmap_lines(mm: mmap.mmap, predicate: Callable[[str], bool]) -> Generator[str
                 if predicate(mm[start:].decode("utf-8")):
                     yield mm[start:].decode("utf-8")
             break
-        if predicate(mm[start:].decode("utf-8")):
+        if predicate(mm[start : nl+1].decode("utf-8")):
             yield mm[start : nl+1].decode("utf-8")
         start = nl + 1
 
