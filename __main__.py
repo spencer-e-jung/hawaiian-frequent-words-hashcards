@@ -67,8 +67,11 @@ Skips words already in the hashcards deck."""
         )
         with open(out, encoding='utf-8') as f, \
             mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
-            entries = next(word_entry_re.finditer(mm))
-            return bool(entries)
+            try:
+                next(word_entry_re.finditer(mm))
+                return False
+            except StopIteration:
+                return True
              
     cursor = load()
 
