@@ -156,7 +156,7 @@ def main():
             lines = lookup_next_most_frequent(count, out)
             add(lines, out)
         except ValueError:
-            lines = lookup_word(args.word)
+            lines = lookup_word(args.entries)
             add(lines, out)
 
 if __name__ == "__main__":
