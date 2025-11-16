@@ -42,16 +42,16 @@ def save(number: int) -> None:
 
 def lookup_word(word: str) -> List[str]:
     """Looks up a dictionary entry for word in HawFreqToEng.txt"""
+    def is_word_match(line: str):
+        w, _ = line.split('\t', 1)
+        return w == word
+    
     with open(DICT, encoding='utf-8') as f, \
         mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
-        for line in mmap_lines(mm, bool):
-            try:
-                w, _ = line.split('\t', 1)
-            except ValueError:
-                continue
-            if w == word:
-                return [line.rstrip()]
-        raise ValueError(f"word {word} not found.")
+        try:
+            return [next(mmap_lines(mm, is_word_match)).rstrip()]
+        except StopIteration:
+            raise ValueError(f"word {word} not found.")
 
 def lookup_next_most_frequent(count: int, out: Path) -> List[str]:
     """Looks up the next dictionary entries to be added from HawFreqToEng.txt
